@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="css/styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>ToDo List</h1>
+        </header>
+        
+        <section id="add-task">
+            <form id="todo-form">
+                <input id="todo-input" type="text" placeholder="Add a new task">
+                <button type="submit">Add Task</button>
+            </form>
+        </section>
+        
+        <section id="display-tasks">
+            <h2>Display Tasks</h2>
+            <ul id="todo-list"></ul>
+        </section>
+
+        <section id="display-tasks">
+            <h2>Completed Tasks</h2>
+            <ul id="complete-list"></ul>
+        </section>
+        
+        
+        <section id="task-actions">
+            <button id="clear-button">Clear List</button>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script> <!-- Link to your JavaScript file -->
+</body>
+</html>

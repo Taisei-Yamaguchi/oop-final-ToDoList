@@ -1,0 +1,34 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    #display-tasks{
+        background-color: rgb(221, 252, 175);
+        margin: 1rem 1rem 1rem 1rem;
+        padding: 1% 1% 1% 1%;
+        width:75%;
+
+        ul{
+            background-color: rgb(232, 255, 195);
+            padding: 0 1% 0 1%;
+            margin: 1rem 1rem 1rem 1rem;
+
+            li{
+                list-style: none;
+                padding-top: 1%;
+                padding-bottom: 1%;
+
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                .list-content{
+                    padding-right: 50%;
+                    
+                }
+            }
+        }
+    }
+}
