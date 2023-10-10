@@ -1,13 +1,13 @@
-// ToDoアイテムのクラス
+// ToDoItem Class
 class ToDoItem {
     constructor(public id: number, public text: string, public completed: boolean) {}
 }
 
-// ToDoリストのクラス
+// ToDoList Class
 class ToDoList {
     private items: ToDoItem[] = [];
 
-    // フォームとリストのDOM要素
+    // get DOM element
     private form: HTMLFormElement;
     private input: HTMLInputElement;
     private list: HTMLUListElement;
@@ -15,47 +15,54 @@ class ToDoList {
     private clearButton: HTMLButtonElement;
 
     constructor() {
-        // フォームとリストのDOM要素を取得
+        // set DOM element as property
         this.form = document.getElementById('todo-form') as HTMLFormElement;
         this.input = document.getElementById('todo-input') as HTMLInputElement;
         this.list = document.getElementById('todo-list') as HTMLUListElement;
         this.completeList = document.getElementById('complete-list') as HTMLUListElement;
         this.clearButton = document.getElementById('clear-button') as HTMLButtonElement;
 
-        // フォームの送信イベントをリッスン
+        // listen form submit event
         this.form.addEventListener('submit', this.addTask.bind(this));
 
-        // タスククリアボタンのクリックイベントをリッスン
+        // listen task clear button click event
         this.clearButton.addEventListener('click', this.clearList.bind(this));
 
-        // ローカルストレージからタスクを復元
+        // get from localstorage
         this.loadTasks();
     }
 
-    // タスクを追加
+    
+    //add tasks method
     private addTask(event: Event) {
         event.preventDefault();
 
+        //check form
         const taskText = this.input.value.trim();
         if (taskText === '') return;
 
+        //set id
         const newId = this.items.length > 0 ? this.items[this.items.length - 1].id + 1 : 1;
+        //cretae new Task obj
         const newTask = new ToDoItem(newId, taskText, false);
         this.items.push(newTask);
+        //save new data in localstorage
         this.saveTasks();
+        //update Lists
         this.displayTasks();
         this.input.value = '';
     }
 
 
-    // タスクの完了状態をトグルするメソッド
+    // tasks completed toggle method
     private toggleTaskCompletion(task: ToDoItem) {
         task.completed = !task.completed;
+        //save new data in localstorage
         this.saveTasks();
         this.displayTasks();
     }
 
-    // タスクを表示
+    // display task method
     private displayTasks() {
         //Display Tasks
         this.list.innerHTML = '';
@@ -73,7 +80,7 @@ class ToDoList {
                 const deleteButton = listItem.querySelector('.delete-button') as HTMLButtonElement;
                 deleteButton.addEventListener('click', () => this.deleteTask(task));
 
-                // チェックボックスの変更イベントをリッスンし、完了状態をトグル
+                // change completed status by listening checkbox change event
                 const checkbox = listItem.querySelector(`#todo-${task.id}`) as HTMLInputElement;
                 checkbox.addEventListener('change', () => this.toggleTaskCompletion(task));
 
@@ -106,7 +113,10 @@ class ToDoList {
         });
     }
 
-    // タスクを削除
+
+
+
+    // delete task event
     private deleteTask(task: ToDoItem) {
         const taskIndex = this.items.indexOf(task);
         if (taskIndex !== -1) {
@@ -116,19 +126,19 @@ class ToDoList {
         }
     }
 
-    // タスクをクリア
+    // clear tasks
     private clearList() {
         this.items = [];
         this.saveTasks();
         this.displayTasks();
     }
 
-    // タスクをローカルストレージに保存
+    // save tasks in localstorage
     private saveTasks() {
         localStorage.setItem('tasks', JSON.stringify(this.items));
     }
 
-    // タスクをローカルストレージから読み込み
+    // read tasks from localstorage
     private loadTasks() {
         const savedTasks = localStorage.getItem('tasks');
         if (savedTasks) {
@@ -138,5 +148,5 @@ class ToDoList {
     }
 }
 
-// ToDoリストのインスタンスを作成
+// create ToDoList instance
 const toDoList = new ToDoList();

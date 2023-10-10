@@ -1,4 +1,4 @@
-// ToDoアイテムのクラス
+// ToDoItem Class
 var ToDoItem = /** @class */ (function () {
     function ToDoItem(id, text, completed) {
         this.id = id;
@@ -7,43 +7,49 @@ var ToDoItem = /** @class */ (function () {
     }
     return ToDoItem;
 }());
-// ToDoリストのクラス
+// ToDoList Class
 var ToDoList = /** @class */ (function () {
     function ToDoList() {
         this.items = [];
-        // フォームとリストのDOM要素を取得
+        // set DOM element as property
         this.form = document.getElementById('todo-form');
         this.input = document.getElementById('todo-input');
         this.list = document.getElementById('todo-list');
         this.completeList = document.getElementById('complete-list');
         this.clearButton = document.getElementById('clear-button');
-        // フォームの送信イベントをリッスン
+        // listen form submit event
         this.form.addEventListener('submit', this.addTask.bind(this));
-        // タスククリアボタンのクリックイベントをリッスン
+        // listen task clear button click event
         this.clearButton.addEventListener('click', this.clearList.bind(this));
-        // ローカルストレージからタスクを復元
+        // get from localstorage
         this.loadTasks();
     }
-    // タスクを追加
+    //add tasks method
     ToDoList.prototype.addTask = function (event) {
         event.preventDefault();
+        //check form
         var taskText = this.input.value.trim();
         if (taskText === '')
             return;
+        //set id
         var newId = this.items.length > 0 ? this.items[this.items.length - 1].id + 1 : 1;
+        //cretae new Task obj
         var newTask = new ToDoItem(newId, taskText, false);
         this.items.push(newTask);
+        //save new data in localstorage
         this.saveTasks();
+        //update Lists
         this.displayTasks();
         this.input.value = '';
     };
-    // タスクの完了状態をトグルするメソッド
+    // tasks completed toggle method
     ToDoList.prototype.toggleTaskCompletion = function (task) {
         task.completed = !task.completed;
+        //save new data in localstorage
         this.saveTasks();
         this.displayTasks();
     };
-    // タスクを表示
+    // display task method
     ToDoList.prototype.displayTasks = function () {
         var _this = this;
         //Display Tasks
@@ -54,7 +60,7 @@ var ToDoList = /** @class */ (function () {
                 listItem.innerHTML = "\n                    <div class='list-content'>\n                    <input type=\"checkbox\" ".concat(task.completed ? 'checked' : '', " id=todo-").concat(task.id, ">\n                    <span><strong>").concat(task.text, "</strong></span>\n                    </div>\n                    <button class=\"delete-button\">Delete</button>\n                ");
                 var deleteButton = listItem.querySelector('.delete-button');
                 deleteButton.addEventListener('click', function () { return _this.deleteTask(task); });
-                // チェックボックスの変更イベントをリッスンし、完了状態をトグル
+                // change completed status by listening checkbox change event
                 var checkbox = listItem.querySelector("#todo-".concat(task.id));
                 checkbox.addEventListener('change', function () { return _this.toggleTaskCompletion(task); });
                 _this.list.appendChild(listItem);
@@ -74,7 +80,7 @@ var ToDoList = /** @class */ (function () {
             }
         });
     };
-    // タスクを削除
+    // delete task event
     ToDoList.prototype.deleteTask = function (task) {
         var taskIndex = this.items.indexOf(task);
         if (taskIndex !== -1) {
@@ -83,17 +89,17 @@ var ToDoList = /** @class */ (function () {
             this.displayTasks();
         }
     };
-    // タスクをクリア
+    // clear tasks
     ToDoList.prototype.clearList = function () {
         this.items = [];
         this.saveTasks();
         this.displayTasks();
     };
-    // タスクをローカルストレージに保存
+    // save tasks in localstorage
     ToDoList.prototype.saveTasks = function () {
         localStorage.setItem('tasks', JSON.stringify(this.items));
     };
-    // タスクをローカルストレージから読み込み
+    // read tasks from localstorage
     ToDoList.prototype.loadTasks = function () {
         var savedTasks = localStorage.getItem('tasks');
         if (savedTasks) {
@@ -103,5 +109,5 @@ var ToDoList = /** @class */ (function () {
     };
     return ToDoList;
 }());
-// ToDoリストのインスタンスを作成
+// create ToDoList instance
 var toDoList = new ToDoList();
